@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Control de Stock</h1>
+        <form id="articleForm">
+            <label for="barcode">Código de barras:</label>
+            <input type="number" id="barcode" name="barcode">
+            <label for="name">Nombre del artículo:</label>
+            <input type="text" id="name" name="name" required>
+            <label for="quantity">Cantidad:</label>
+            <input type="number" id="quantity" name="quantity" required>
+            <button type="submit">Agregar artículo</button>
+        </form>
+        <h2>Lista de artículos</h2>
+        <ul id="articleList"></ul>
+    </div>
+
+    <div class="container">
+        <h2>Buscar artículo</h2>
+        <form id="searchForm">
+            <label for="searchCode">Código del artículo:</label>
+            <input type="text" id="searchCode" name="searchCode" required>
+            <button type="submit">Buscar</button>
+        </form>
+        <p id="searchResult"></p>
+    </div>
+    <ul id="articleList"></ul>
+<script src="script.js"></script>
+</body>
+</html>
