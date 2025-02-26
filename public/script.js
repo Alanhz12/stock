@@ -9,6 +9,20 @@ document.addEventListener('DOMContentLoaded', () => {
         searchArticle();
     });
 
+    document.getElementById('registerForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        registerUser();
+    });
+
+    document.getElementById('loginForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        loginUser();
+    });
+
+    document.getElementById('logoutButton').addEventListener('click', function() {
+        logoutUser();
+    });
+
     function addArticle() {
         const barcode = document.getElementById('barcode').value;
         const name = document.getElementById('name').value;
@@ -23,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .then(response => response.json())
         .then(data => {
-            console.log(data);
+            console.log('Server response:', data);
             updateArticleList();
         })
         .catch(error => {
@@ -72,6 +86,59 @@ document.addEventListener('DOMContentLoaded', () => {
             .catch(error => {
                 console.error('Error:', error);
             });
+    }
+
+    function registerUser() {
+        const username = document.getElementById('regUsername').value;
+        const password = document.getElementById('regPassword').value;
+
+        fetch('/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ username, password })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('User registered:', data);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+
+    function loginUser() {
+        const username = document.getElementById('loginUsername').value;
+        const password = document.getElementById('loginPassword').value;
+
+        fetch('/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ username, password })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('User logged in:', data);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+
+    function logoutUser() {
+        fetch('/logout', {
+            method: 'POST'
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('User logged out:', data);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
     }
 
     // Inicializar la lista de artículos
