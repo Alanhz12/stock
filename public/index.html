@@ -7,8 +7,8 @@
     <title>Document</title>
 </head>
 <body>
-     <!-- Formulario de Registro -->
-     <div class="container">
+    <!-- Formulario de Registro -->
+    <div class="container" id="registerContainer">
         <h2>Registrar Usuario</h2>
         <form id="registerForm">
             <label for="regUsername">Usuario:</label>
@@ -20,7 +20,7 @@
     </div>
 
     <!-- Formulario de Inicio de Sesión -->
-    <div class="container">
+    <div class="container" id="loginContainer">
         <h2>Iniciar Sesión</h2>
         <form id="loginForm">
             <label for="loginUsername">Usuario:</label>
@@ -31,14 +31,8 @@
         </form>
     </div>
 
-    <!-- Formulario de Cierre de Sesión -->
-    <div class="container">
-        <h2>Cerrar Sesión</h2>
-        <button id="logoutButton">Cerrar Sesión</button>
-    </div>
-
-    
-    <div class="container">
+    <!-- Contenido Principal -->
+    <div class="container" id="mainContainer" style="display: none;">
         <h1>Control de Stock</h1>
         <form id="articleForm">
             <label for="barcode">Código de barras:</label>
@@ -53,7 +47,7 @@
         <ul id="articleList"></ul>
     </div>
 
-    <div class="container">
+    <div class="container" id="searchContainer" style="display: none;">
         <h2>Buscar artículo</h2>
         <form id="searchForm">
             <label for="searchCode">Código del artículo:</label>
@@ -62,7 +56,12 @@
         </form>
         <p id="searchResult"></p>
     </div>
-    <ul id="articleList"></ul>
-<script src="script.js"></script>
+
+    <!-- Formulario de Cierre de Sesión -->
+    <div class="container" id="logoutContainer" style="display: none;">
+        <button id="logoutButton">Cerrar Sesión</button>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>

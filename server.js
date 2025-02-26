@@ -102,12 +102,65 @@ app.post('/add-article', (req, res) => {
 });
 
 app.get('/articles', (req, res) => {
-    console.log('Fetching articles');
-    db.all("SELECT * FROM articles", [], (err, rows) => {
+    const searchCode = req.query.searchCode; // Obtener el parámetro de búsqueda de la URL
+    let sql = "SELECT * FROM articles";
+    let params = [];
+
+    if (searchCode) {
+        sql += " WHERE id = ? OR barcode = ? OR name LIKE ?";
+        params = [searchCode, searchCode, `%${searchCode}%`];
+    }
+
+    db.all(sql, params, (err, rows) => {
         if (err) {
             return res.status(500).json({ error: err.message });
         }
         res.json({ articles: rows });
+    });
+});
+
+// Ruta para eliminar un artículo completo
+app.delete('/delete-article/:id', (req, res) => {
+    const id = req.params.id;
+    db.run("DELETE FROM articles WHERE id = ?", [id], function(err) {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+        res.json({ message: "Artículo eliminado", id: id });
+    });
+});
+
+// Ruta para reducir la cantidad de un artículo
+app.post('/reduce-quantity', (req, res) => {
+    const { id, quantity } = req.body;
+
+    db.get("SELECT * FROM articles WHERE id = ?", [id], (err, row) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+        if (!row) {
+            return res.status(404).json({ message: "Artículo no encontrado" });
+        }
+        if (row.quantity < quantity) {
+            return res.status(400).json({ message: "Cantidad insuficiente" });
+        }
+
+        const newQuantity = row.quantity - quantity;
+        if (newQuantity === 0) {
+            db.run("DELETE FROM articles WHERE id = ?", [id], function(err) {
+                if (err) {
+                    return res.status(500).json({ error: err.message });
+                }
+                res.json({ message: "Artículo eliminado completamente", id: id });
+            });
+        } else {
+            db.run("UPDATE articles SET quantity = ? WHERE id = ?", [newQuantity, id], function(err) {
+                if (err) {
+                    return res.status(500).json({ error: err.message });
+                }
+                res.json({ message: "Cantidad reducida", id: id, newQuantity: newQuantity });
+            });
+        }
     });
 });
 
